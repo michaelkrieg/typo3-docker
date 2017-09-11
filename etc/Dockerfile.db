@@ -1,0 +1,8 @@
+FROM mariadb:10.2
+
+ENV MYSQL_ROOT_PASSWORD=yoursupersecretpassword
+ENV MYSQL_USER=typo3
+ENV MYSQL_PASSWORD=yourothersupersecretpassword
+ENV MYSQL_DATABASE=typo3
+
+

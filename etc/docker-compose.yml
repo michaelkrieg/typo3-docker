@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+    typo3-db:
+        build:
+            context: .
+            dockerfile: Dockerfile.db
+        ports:
+            - "13306:3306"
+        container_name: typo3_db
+        networks:
+            - typo3_network
+        volumes:
+            - db-data:/var/lib/mysql/data
+        entrypoint:
+            - docker-entrypoint.sh
+            - --character-set-server=utf8 
+            - --collation-server=utf8_unicode_ci
+
+    typo3-web:
+        build:
+            context: .
+            dockerfile: Dockerfile.web
+        depends_on:
+            - typo3-db
+        links:
+            - typo3-db
+        ports:
+            - "80:80"
+        container_name: typo3_web
+        networks:
+            - typo3_network
+        volumes:
+            - fileadmin:/var/www/html/fileadmin
+            - typo3conf:/var/www/html/typo3conf
+            - typo3temp:/var/www/html/typo3temp
+            - uploads:/var/www/html/uploads
+
+networks:
+    typo3_network:
+
+volumes:
+    db-data:
+    fileadmin:
+    typo3conf:
+    typo3temp:
+    uploads:
+
+
